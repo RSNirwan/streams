@@ -50,7 +50,7 @@ class Stream:
                     rec = yield
                     target.send(f(rec))
             except GeneratorExit:
-                pass
+                print("leaving map")
 
         self._transformers.append(wrapper)
         return wrapper
@@ -66,7 +66,7 @@ class Stream:
                     if f(rec):
                         target.send(rec)
             except GeneratorExit:
-                pass
+                print("leaving filter")
 
         self._transformers.append(wrapper)
         return wrapper
@@ -82,7 +82,7 @@ class Stream:
                     for i in f(rec):
                         target.send(i)
             except GeneratorExit:
-                pass
+                print("leaving expand")
 
         self._transformers.append(wrapper)
         return wrapper
@@ -106,7 +106,7 @@ class Stream:
                     else:
                         pass
             except GeneratorExit:
-                pass
+                print(f"leaving reduce. Collection state: {collect}")
 
         self._transformers.append(wrapper)
         return wrapper
@@ -120,7 +120,7 @@ class Stream:
                     rec = yield
                     f(rec, collector)
             except GeneratorExit:
-                pass
+                print("leaving sink")
 
         self._sink = wrapper
         return wrapper

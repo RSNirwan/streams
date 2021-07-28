@@ -21,8 +21,8 @@ def transform1(inp: Number) -> bool:
 
 @stream.expand_transform
 def transform2(inp: Number) -> Iterator:
-    # double every input
-    yield from [inp, inp]
+    # tripple every input
+    yield from [inp, inp, inp]
 
 
 @stream.map_transform
@@ -46,7 +46,7 @@ def sink(inp: Number, collector: Callable) -> None:
 
 a = []
 collector = lambda x: a.append(x)
-stream(input=[1, 2, 3], collector=collector)  # even inputs are squared
+stream(input=[1, 2, 3], collector=collector)
 print(a)
 
 stream(input=4, collector=collector)
