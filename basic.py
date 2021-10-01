@@ -7,7 +7,9 @@ def producer(inps, ts, sink, collector):
         next(target)
     try:
         for inp in inps:
-            target.send(inp)
+            print(f"producer: sending {inp} to target.")
+            trec = target.send(inp)
+            print(f"producer: received {trec} from target.")
     except GeneratorExit:
         pass
 
@@ -21,9 +23,12 @@ def transformer(ts, sink, collector):
         next(target)
     try:
         while True:
-            rec = yield
+            rec = yield 21
+            print(f"transformer: received {rec}.")
             rec = rec * rec  # square numbers
-            target.send(rec)
+            print(f"transformer: sending {rec} to target.")
+            trec = target.send(rec)
+            print(f"transformer: received {trec} from target.")
     except GeneratorExit:
         pass
 
@@ -31,7 +36,8 @@ def transformer(ts, sink, collector):
 def sink(collector):
     try:
         while True:
-            rec = yield
+            rec = yield 20
+            print(f"sink: received {rec}.")
             collector.append(rec)
     except GeneratorExit:
         pass
