@@ -21,9 +21,10 @@ def transformer(ts, sink, collector):
     else:
         target = sink(collector)
         next(target)
+    trec = None
     try:
         while True:
-            rec = yield 21
+            rec = yield trec
             print(f"transformer: received {rec}.")
             rec = rec * rec  # square numbers
             print(f"transformer: sending {rec} to target.")
@@ -34,11 +35,13 @@ def transformer(ts, sink, collector):
 
 
 def sink(collector):
+    trec = None
     try:
         while True:
-            rec = yield 20
+            rec = yield trec
             print(f"sink: received {rec}.")
             collector.append(rec)
+            trec = "success"
     except GeneratorExit:
         pass
 
